@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DEPARTMENT">
+          <Key>
+            <PropertyRef Name="DepartmentID" />
+          </Key>
+          <Property Name="DepartmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartmentName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PERSONNELCATALOG">
+          <Key>
+            <PropertyRef Name="RegisterID" />
+          </Key>
+          <Property Name="RegisterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartmentID" Type="int" Nullable="false" />
+          <Property Name="TitleID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhoneNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TITLE">
+          <Key>
+            <PropertyRef Name="TitleID" />
+          </Key>
+          <Property Name="TitleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_PERSONNELCATALOG_DEPARTMENT">
+          <End Role="DEPARTMENT" Type="Self.DEPARTMENT" Multiplicity="1" />
+          <End Role="PERSONNELCATALOG" Type="Self.PERSONNELCATALOG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTMENT">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="PERSONNELCATALOG">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERSONNELCATALOG_TITLE">
+          <End Role="TITLE" Type="Self.TITLE" Multiplicity="1" />
+          <End Role="PERSONNELCATALOG" Type="Self.PERSONNELCATALOG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TITLE">
+              <PropertyRef Name="TitleID" />
+            </Principal>
+            <Dependent Role="PERSONNELCATALOG">
+              <PropertyRef Name="TitleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SMModelStoreContainer">
+          <EntitySet Name="DEPARTMENT" EntityType="Self.DEPARTMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERSONNELCATALOG" EntityType="Self.PERSONNELCATALOG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TITLE" EntityType="Self.TITLE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_PERSONNELCATALOG_DEPARTMENT" Association="Self.FK_PERSONNELCATALOG_DEPARTMENT">
+            <End Role="DEPARTMENT" EntitySet="DEPARTMENT" />
+            <End Role="PERSONNELCATALOG" EntitySet="PERSONNELCATALOG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSONNELCATALOG_TITLE" Association="Self.FK_PERSONNELCATALOG_TITLE">
+            <End Role="TITLE" EntitySet="TITLE" />
+            <End Role="PERSONNELCATALOG" EntitySet="PERSONNELCATALOG" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DEPARTMENT">
+          <Key>
+            <PropertyRef Name="DepartmentID" />
+          </Key>
+          <Property Name="DepartmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PERSONNELCATALOGs" Relationship="Self.FK_PERSONNELCATALOG_DEPARTMENT" FromRole="DEPARTMENT" ToRole="PERSONNELCATALOG" />
+        </EntityType>
+        <EntityType Name="PERSONNELCATALOG">
+          <Key>
+            <PropertyRef Name="RegisterID" />
+          </Key>
+          <Property Name="RegisterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentID" Type="Int32" Nullable="false" />
+          <Property Name="TitleID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhoneNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="DEPARTMENT" Relationship="Self.FK_PERSONNELCATALOG_DEPARTMENT" FromRole="PERSONNELCATALOG" ToRole="DEPARTMENT" />
+          <NavigationProperty Name="TITLE" Relationship="Self.FK_PERSONNELCATALOG_TITLE" FromRole="PERSONNELCATALOG" ToRole="TITLE" />
+        </EntityType>
+        <EntityType Name="TITLE">
+          <Key>
+            <PropertyRef Name="TitleID" />
+          </Key>
+          <Property Name="TitleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PERSONNELCATALOGs" Relationship="Self.FK_PERSONNELCATALOG_TITLE" FromRole="TITLE" ToRole="PERSONNELCATALOG" />
+        </EntityType>
+        <Association Name="FK_PERSONNELCATALOG_DEPARTMENT">
+          <End Role="DEPARTMENT" Type="Self.DEPARTMENT" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PERSONNELCATALOG" Type="Self.PERSONNELCATALOG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTMENT">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="PERSONNELCATALOG">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERSONNELCATALOG_TITLE">
+          <End Role="TITLE" Type="Self.TITLE" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PERSONNELCATALOG" Type="Self.PERSONNELCATALOG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TITLE">
+              <PropertyRef Name="TitleID" />
+            </Principal>
+            <Dependent Role="PERSONNELCATALOG">
+              <PropertyRef Name="TitleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DEPARTMENTs" EntityType="Self.DEPARTMENT" />
+          <EntitySet Name="PERSONNELCATALOGs" EntityType="Self.PERSONNELCATALOG" />
+          <EntitySet Name="TITLEs" EntityType="Self.TITLE" />
+          <AssociationSet Name="FK_PERSONNELCATALOG_DEPARTMENT" Association="Self.FK_PERSONNELCATALOG_DEPARTMENT">
+            <End Role="DEPARTMENT" EntitySet="DEPARTMENTs" />
+            <End Role="PERSONNELCATALOG" EntitySet="PERSONNELCATALOGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERSONNELCATALOG_TITLE" Association="Self.FK_PERSONNELCATALOG_TITLE">
+            <End Role="TITLE" EntitySet="TITLEs" />
+            <End Role="PERSONNELCATALOG" EntitySet="PERSONNELCATALOGs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SMModelStoreContainer" CdmEntityContainer="SMEntities">
+          <EntitySetMapping Name="DEPARTMENTs">
+            <EntityTypeMapping TypeName="SMModel.DEPARTMENT">
+              <MappingFragment StoreEntitySet="DEPARTMENT">
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERSONNELCATALOGs">
+            <EntityTypeMapping TypeName="SMModel.PERSONNELCATALOG">
+              <MappingFragment StoreEntitySet="PERSONNELCATALOG">
+                <ScalarProperty Name="RegisterID" ColumnName="RegisterID" />
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="TitleID" ColumnName="TitleID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TITLEs">
+            <EntityTypeMapping TypeName="SMModel.TITLE">
+              <MappingFragment StoreEntitySet="TITLE">
+                <ScalarProperty Name="TitleID" ColumnName="TitleID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
